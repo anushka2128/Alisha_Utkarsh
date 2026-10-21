@@ -197,6 +197,7 @@ a{color:inherit}
 
 #scratch{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;transition:opacity .9s ease;z-index:3}
 #scratch.gone{opacity:0;pointer-events:none}
+.fing{position:absolute;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .3s;z-index:10;border:2px solid rgba(179,138,45,.9);background:radial-gradient(circle,#fff 0 24%,rgba(255,248,220,.5) 26% 64%,rgba(255,248,220,0) 68%);box-shadow:0 2px 10px rgba(90,60,20,.4)}
 .revealbtn{background:none;border:0;padding:3px 10px;font:500 2.8cqw var(--body);color:var(--muted);text-decoration:underline;cursor:pointer}
 .cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2.6cqw;width:100%}
 .cd>div{position:relative;background:var(--ivory);border:1px solid var(--sand-2);outline:1px solid var(--sand);outline-offset:-3px;padding:1.7cqw 0 1.4cqw;text-align:center;
@@ -409,7 +410,7 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
 
 <!-- ================= SCREEN 1 · SHRI GANESH ================= -->
 <section class="scr s-invoke" aria-labelledby="couple-h">
-  <p class="sr" lang="mr">॥ श्री गणेशाय नमः ॥ वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ। निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा॥</p>
+  <p class="sr" lang="mr">॥ श्री गणेशाय नमः ॥ वक्रतुंड महाकाय सूर्यकोटि समप्रभ । निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा ॥</p>
   <div class="cnt">
     <h2 class="gradtext deva" lang="mr" id="couple-h">शुभ विवाह</h2>
     <span class="rule" aria-hidden="true"></span>
@@ -426,14 +427,14 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   <div class="cnt">
     <p class="invite">With the blessings of our ancestors and family, we warmly invite you to celebrate the wedding of</p>
     <article class="person">
-      <p class="eyebrow"><span class="deva">वधू</span> · Bride</p>
+      <p class="eyebrow"><span class="deva">चि. सौ. का.</span> · वधू · Bride</p>
       <h2 class="name gradtext">Harshada</h2>
       <p class="sur">Shinde</p>
       <p class="parents">Daughter of Mr. <b>Dattatray Tukaram Shinde</b> &amp; Mrs. <b>Pramila Dattatray Shinde</b></p>
     </article>
     <div class="weds" aria-hidden="true"><span>weds</span></div>
     <article class="person">
-      <p class="eyebrow"><span class="deva">वर</span> · Groom</p>
+      <p class="eyebrow"><span class="deva">चि.</span> · वर · Groom</p>
       <h2 class="name gradtext">Sohan</h2>
       <p class="sur">Chougule</p>
       <p class="parents">Son of Mr. <b>Kiran Baban Chougule</b> &amp; Mrs. <b>Rekha Baban Chougule</b></p>
@@ -468,13 +469,14 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
             <div class="lab">Shubh Lagna Muhurat</div>
             <div class="tm-hero gradtext">11:00 AM</div>
             <div class="tm-sub">MORNING ONWARDS</div>
-            <div class="nakshatra deva" lang="mr">हस्त नक्षत्र · गोरज मुहूर्त</div>
+            <div class="nakshatra deva" lang="mr">हस्त नक्षत्र · शुभ मुहूर्त</div>
           </div>
         </div>
         <div class="swd" aria-hidden="true"><i class="on"></i><i></i></div>
         <span class="swh" aria-hidden="true">SWIPE ›</span>
       </div>
       <canvas id="scratch" aria-label="Scratch card. Drag a finger or mouse across it to reveal the muhurat."></canvas>
+      <i class="fing" id="scratch-fing" aria-hidden="true"></i>
     </div>
     <div class="scratch-cue" id="scratch-cue"><span aria-hidden="true">✨</span> Drag or swipe to scratch &amp; reveal</div>
     <button class="revealbtn" id="revealbtn" type="button">Reveal without scratching</button>
@@ -521,7 +523,7 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   <div class="b-in">
   <div class="b-head">
     <p class="eyebrow">Ukhane &amp; Blessings Wall</p>
-    <h2 class="gradtext deva" lang="mr" id="bl-h">उखाणे आणि आशीर्वाद</h2>
+    <h2 class="gradtext deva" lang="mr" id="bl-h">उखाणे व शुभाशीर्वाद</h2>
     <p class="sub gradtext">Leave a blessing, or a ukhana</p>
     <p class="lead">A warm wish or a witty rhyming ukhana for Harshada and Sohan. The ten newest notes are shown here.</p>
   </div>
@@ -529,9 +531,9 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   <form id="gbform" autocomplete="off">
     <div class="row2">
       <div><label for="gb-name">Your name</label><input type="text" id="gb-name" maxlength="60" required></div>
-      <div><label for="gb-type">It is a</label><select id="gb-type"><option value="Blessing">Blessing</option><option value="Ukhana">Ukhana</option></select></div>
+      <div><label for="gb-type">It is a</label><select id="gb-type"><option value="Blessing">शुभाशीर्वाद (Blessing)</option><option value="Ukhana">उखाणा (Ukhana)</option></select></div>
     </div>
-    <div><label for="gb-msg">Your message</label><textarea id="gb-msg" maxlength="400" required placeholder="Write a blessing or a ukhana for Harshada and Sohan"></textarea></div>
+    <div><label for="gb-msg">Your message</label><textarea id="gb-msg" maxlength="400" required placeholder="हर्षदा आणि सोहन यांच्यासाठी शुभाशीर्वाद किंवा उखाणा लिहा (Write a blessing or a ukhana)"></textarea></div>
     <input type="text" id="gb-web" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button class="btn fill" type="submit" id="gb-send">Post to the wall</button>
     <div class="status" id="gb-status" role="status" aria-live="polite"></div>
@@ -673,6 +675,7 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
         window.scrollTo(0,0);
         var s=P('snd');if(s&&audioOK)s.hidden=false;
         var d=P('nav-dock');if(d)d.classList.remove('hide');
+        setTimeout(function(){if(!scratched&&!revealed)paintCard();}, 300);
         // Trigger the illusion of second slide peeking from down to up!
         setTimeout(triggerSecondSlidePeek, 1200);
       },reduce?0:820);
@@ -745,48 +748,57 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   var box=$('#scratchbox'),cv=$('#scratch'),ctx=cv.getContext('2d',{willReadFrequently:true});
   var scratched=false,revealed=false,drawing=false,last=null,mv=0;
   function paintCard(){
-    var w=box.clientWidth,h=box.clientHeight,dpr=Math.min(window.devicePixelRatio||1,2),i;
+    var w=box.clientWidth,h=box.clientHeight;
     if(!w||!h)return;
+    var dpr=Math.min(window.devicePixelRatio||1,2),i;
     cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.globalCompositeOperation='source-over';
     var g=ctx.createLinearGradient(0,0,w,h);
-    g.addColorStop(0,'#B8902F');g.addColorStop(.28,'#EBD598');g.addColorStop(.5,'#C39B3A');g.addColorStop(.74,'#F0DCA3');g.addColorStop(1,'#A67C25');
+    g.addColorStop(0,'#C39B3A');g.addColorStop(.25,'#F5E2A8');g.addColorStop(.5,'#D4A843');g.addColorStop(.75,'#F7E7B6');g.addColorStop(1,'#B08427');
     ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
     ctx.lineWidth=.6;
     for(i=0;i<260;i++){
-      ctx.strokeStyle=(i%2?'rgba(255,255,255,.2)':'rgba(110,70,10,.12)');
+      ctx.strokeStyle=(i%2?'rgba(255,255,255,.24)':'rgba(90,50,10,.14)');
       var yy=Math.random()*h;ctx.beginPath();ctx.moveTo(0,yy);ctx.lineTo(w,yy+(Math.random()-.5)*14);ctx.stroke();
     }
     var gl=ctx.createLinearGradient(w*.1,0,w*.6,h);
     gl.addColorStop(0,'rgba(255,255,255,0)');gl.addColorStop(.5,'rgba(255,255,255,.3)');gl.addColorStop(1,'rgba(255,255,255,0)');
     ctx.fillStyle=gl;ctx.beginPath();ctx.moveTo(w*.22,0);ctx.lineTo(w*.46,0);ctx.lineTo(w*.24,h);ctx.lineTo(0,h);ctx.closePath();ctx.fill();
-    ctx.strokeStyle='rgba(255,248,227,.8)';ctx.lineWidth=1;ctx.setLineDash([2,4]);
-    ctx.strokeRect(10.5,10.5,w-21,h-21);ctx.setLineDash([]);
-    var fs=Math.round(clamp(w/20,9,13));
+    ctx.strokeStyle='rgba(255,248,227,.85)';ctx.lineWidth=1;ctx.setLineDash([2,4]);
+    ctx.strokeRect(9.5,9.5,w-19,h-19);ctx.setLineDash([]);
+    var fs=Math.round(clamp(w/20,11,14));
     ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillStyle='#5B1520';ctx.shadowColor='rgba(255,243,205,.75)';ctx.shadowBlur=3;ctx.shadowOffsetY=1;
     ctx.font='600 '+fs+'px Cinzel, serif';
     if('letterSpacing' in ctx)ctx.letterSpacing=Math.round(fs/6)+'px';
-    ctx.fillText('SCRATCH TO REVEAL',w/2+fs/12,h/2-fs*.95);
-    ctx.fillText('THE SHUBH MUHURAT',w/2+fs/12,h/2+fs*.95);
+    ctx.fillText('SCRATCH TO REVEAL',w/2,h/2-fs*.85);
+    ctx.fillText('SHUBH MUHURAT ✨',w/2,h/2+fs*.85);
     if('letterSpacing' in ctx)ctx.letterSpacing='0px';
     ctx.shadowColor='transparent';
   }
   function reveal(){
-    if(revealed)return;revealed=true;cv.classList.add('gone');
+    if(revealed)return;revealed=true;stopSDemo();cv.classList.add('gone');
     var b=P('revealbtn');if(b)b.hidden=true;
     var cue=P('scratch-cue');if(cue)cue.remove();
     petals();
     if(window.runMuhSwipeDemo)window.runMuhSwipeDemo();
   }
-  function pos(e){var r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
+  function pos(e){
+    var r=cv.getBoundingClientRect();
+    return [(e.clientX-r.left)*(box.clientWidth/r.width),(e.clientY-r.top)*(box.clientHeight/r.height)];
+  }
   function cleared(){
     var d=ctx.getImageData(0,0,cv.width,cv.height).data,n=0,t=0,i;
     for(i=3;i<d.length;i+=4*29){t++;if(d[i]<40)n++;}
     return n/t;
   }
+  function stroke(a,b){
+    ctx.globalCompositeOperation='destination-out';ctx.lineWidth=Math.max(26,box.clientWidth*.12);ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
+    ctx.globalCompositeOperation='source-over';
+  }
   cv.addEventListener('pointerdown',function(e){
-    if(revealed)return;drawing=true;scratched=true;last=pos(e);
+    stopSDemo();if(revealed)return;drawing=true;scratched=true;last=pos(e);
     try{cv.setPointerCapture(e.pointerId)}catch(_){}
     stroke(last,last);
   });
@@ -797,16 +809,56 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   function endScratch(){drawing=false;if(!revealed&&scratched&&cleared()>.45)reveal();}
   cv.addEventListener('pointerup',endScratch);
   cv.addEventListener('pointercancel',endScratch);
-  function stroke(a,b){
-    ctx.globalCompositeOperation='destination-out';ctx.lineWidth=Math.max(26,box.clientWidth*.11);ctx.lineCap='round';ctx.lineJoin='round';
-    ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
-    ctx.globalCompositeOperation='source-over';
-  }
   P('revealbtn').addEventListener('click',reveal);
+
+  /* Automated glowing finger scratch demo (like Alisha & Utkarsh) */
+  var sdT=[],sdRaf=null,sdDirty=false,fing=P('scratch-fing')||document.createElement('i');
+  if(!fing.parentNode)box.appendChild(fing);
+  function stopSDemo(){
+    sdT.forEach(clearTimeout);sdT=[];if(sdRaf)cancelAnimationFrame(sdRaf);sdRaf=null;fing.style.opacity='0';
+    if(sdDirty&&!scratched&&!revealed){sdDirty=false;paintCard();}
+    cv.style.opacity='';
+  }
+  function sdPass(){
+    if(scratched||revealed)return;sdDirty=true;
+    var w=box.clientWidth,h=box.clientHeight,pts=[[.14,.3],[.86,.3],[.14,.6],[.86,.6]],seg=0,t0=performance.now(),lastPt=null;
+    fing.style.opacity='1';
+    (function step(t){
+      var k=(t-t0)/650;
+      if(k>=1){seg++;t0=t;k=0;if(seg>=pts.length-1){fing.style.opacity='0';sdRaf=null;return;}}
+      var a=pts[seg],c=pts[seg+1],x=(a[0]+(c[0]-a[0])*k)*w,y=(a[1]+(c[1]-a[1])*k)*h;
+      fing.style.transform='translate('+x+'px,'+y+'px)';
+      if(lastPt)stroke(lastPt,[x,y]);
+      lastPt=[x,y];
+      sdRaf=requestAnimationFrame(step);
+    })(t0);
+  }
+  function sdRun(){
+    stopSDemo();if(scratched||revealed||reduce)return;
+    function fadeRe(){cv.style.opacity='0';sdT.push(setTimeout(function(){sdDirty=false;paintCard();cv.style.opacity='1';},1050));}
+    sdT.push(setTimeout(sdPass,2000));sdT.push(setTimeout(fadeRe,4400));
+    sdT.push(setTimeout(sdPass,6600));sdT.push(setTimeout(fadeRe,9000));
+  }
+
+  if(window.ResizeObserver){
+    new ResizeObserver(function(){if(!scratched&&!revealed)paintCard();}).observe(box);
+  }else{
+    window.addEventListener('resize',function(){if(!scratched&&!revealed)paintCard();});
+  }
+  var muhCardObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        if(!scratched&&!revealed)paintCard();
+        sdRun();
+        muhCardObs.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.25});
+  muhCardObs.observe(box);
+
   var fontsReady=(document.fonts&&document.fonts.load)?document.fonts.load('600 15px Cinzel'):Promise.resolve();
   fontsReady.catch(function(){}).then(function(){if(!scratched&&!revealed)paintCard();});
   paintCard();
-  window.addEventListener('resize',function(){if(!scratched&&!revealed)paintCard();});
 
   /* ===== Countdown ===== */
   var target=new Date(CFG.start).getTime();
@@ -1055,10 +1107,10 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
     diya:'<path d="M4 14h16c0 4-3.5 6-8 6s-8-2-8-6z"/><path d="M12 4c1.6 2 2.4 3 2.4 4.4a2.4 2.4 0 0 1-4.8 0C9.6 7 10.4 6 12 4z"/>'
   };
   var STEPS=[
-    ['kalash','साखरपुडा आणि सीमांत पूजन','Sakharpuda &amp; Seemant Pujan','Morning rituals',''],
-    ['conch','शुभ मंगलाष्टक आणि अंतरपाट','Shubh Mangalashtak &amp; Antarpat','11:00 AM',''],
-    ['agni','कन्यादान आणि सप्तपदी','Kanyadaan &amp; Saptapadi','Followed by lunch','Traditional pangat <span class="deva" lang="mr">(पारंपरिक पंगत)</span>'],
-    ['diya','स्वागत समारंभ आणि आशीर्वाद','Reception &amp; Ashirwad','Evening celebrations','']
+    ['kalash','साखरपुडा व सीमंतपूजन','Sakharpuda &amp; Simant Pujan','Morning rituals',''],
+    ['conch','शुभ मंगलाष्टके व अंतरपाट','Shubh Mangalashtake &amp; Antarpat','11:00 AM',''],
+    ['agni','कन्यादान व सप्तपदी','Kanyadaan &amp; Saptapadi','Followed by lunch','Traditional pangat <span class="deva" lang="mr">(पारंपरिक पंगत)</span>'],
+    ['diya','स्वागत समारंभ व शुभाशीर्वाद','Reception &amp; Shubhashirwad','Evening celebrations','']
   ];
   P('tl').innerHTML=STEPS.map(function(s){
     return '<li><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">'+ICONS[s[0]]+'</svg></div><div><div class="mr" lang="mr">'+s[1]+'</div><h3>'+s[2]+'</h3><div class="when">'+s[3]+'</div>'+(s[4]?'<div class="note">'+s[4]+'</div>':'')+'</div></li>';
