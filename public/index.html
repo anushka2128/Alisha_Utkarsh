@@ -97,10 +97,11 @@ a{color:inherit}
 @keyframes chv{0%{opacity:0;transform:translateY(-8px) rotate(45deg)}50%{opacity:1}100%{opacity:0;transform:translateY(8px) rotate(45deg)}}
 
 /* Envelope Names Banner */
-#envnames{position:absolute;left:0;right:0;top:76%;text-align:center;z-index:3;pointer-events:none;color:#FFF7E5;text-shadow:0 2px 8px rgba(30,6,10,.8);transition:opacity .4s ease}
-#envnames .e1{font:600 clamp(10px,2.6vw,12px)/1 var(--cin);letter-spacing:.32em;color:var(--gold-lt);text-transform:uppercase;padding-left:.32em}
-#envnames .nn{font:400 clamp(32px,9vw,52px)/1.2 var(--script);margin:6px 0 2px;padding:0 12px}
-#envnames .e2{font:400 clamp(16px,4.5vw,22px)/1.4 var(--yatra);color:#FFF4D4;letter-spacing:.08em}
+#envnames{position:absolute;left:50%;transform:translateX(-50%);width:min(76vw,38vh,320px);max-width:82%;top:67%;text-align:center;z-index:3;pointer-events:none;color:#FFF7E5;text-shadow:0 2px 8px rgba(30,6,10,.85);transition:opacity .4s ease}
+#envnames .e1{font:600 clamp(9px,min(2.4vw,1.8vh),11px)/1 var(--cin);letter-spacing:.28em;color:var(--gold-lt);text-transform:uppercase;padding-left:.28em}
+#envnames .nn{font:400 clamp(20px,min(5.6vw,4.2vh),34px)/1.18 var(--script);margin:4px 0 2px;white-space:nowrap;overflow:visible;color:var(--gold-lt);background:linear-gradient(100deg,#FFF2CC 0%,#E8BE5D 45%,#FFF2CC 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 4px rgba(20,5,10,.7))}
+#envnames .e2{font:400 clamp(13px,min(3.8vw,2.6vh),17px)/1.3 "Tiro Devanagari Marathi","Mukta",serif;color:#FFF4D4;letter-spacing:.04em;text-shadow:0 2px 6px rgba(30,6,10,.85)}
+@media (max-height:540px){#envnames{top:64%}#envnames .nn{margin:2px 0 1px}}
 
 /* Twinkling stars on envelope */
 .tw{position:absolute;width:6px;height:6px;pointer-events:none;border-radius:50%;background:radial-gradient(circle,#FFF8D6,#E3BD5A 55%,transparent 72%);opacity:0;z-index:2;animation:twk 2.6s ease-in-out infinite}
@@ -330,7 +331,7 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
 @keyframes dust{0%{transform:translate(0,0) scale(.6);opacity:0}15%{opacity:.6}100%{transform:translate(var(--dx,0px),-112vh) scale(1.3);opacity:0}}
 
 /* Envelope Seal Top Shloka Text */
-.seal .top{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font:400 clamp(16px,4.5vw,21px)/1.5 var(--yatra);color:var(--gold-lt);text-shadow:0 2px 6px rgba(30,6,10,.9);letter-spacing:.06em}
+.seal .top{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font:400 clamp(15px,4.2vw,20px)/1.4 "Tiro Devanagari Marathi","Mukta",serif;color:var(--gold-lt);text-shadow:0 2px 6px rgba(30,6,10,.9);letter-spacing:0}
 
 /* Illusion of Screen 2 rising from down to up */
 .s-couple.illusion-peek{animation:illusionRise 1.6s cubic-bezier(.22,1,.36,1) forwards;z-index:10}
@@ -389,7 +390,7 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   </button>
   <div id="envnames">
     <p class="e1">WEDDING INVITATION</p>
-    <h1 class="nn gradtext">Harshada &amp; Sohan</h1>
+    <h1 class="nn">Harshada &amp; Sohan</h1>
     <p class="e2 deva" lang="mr">॥ सस्नेह निमंत्रण ॥</p>
   </div>
 </div>
