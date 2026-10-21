@@ -77,14 +77,35 @@ a{color:inherit}
 #zip{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;filter:drop-shadow(0 2px 3px rgba(30,40,20,.5))}
 .zl{fill:none;stroke:#B58E36;stroke-width:7;stroke-dasharray:3 3;stroke-linecap:butt}
 .zl2{fill:none;stroke:#EBD598;stroke-width:1.6}
-.seal{position:absolute;left:50%;width:132px;height:132px;transform:translate(-50%,-50%);padding:0;border:0;background:none;
-  touch-action:none;cursor:grab;filter:drop-shadow(0 6px 10px rgba(30,6,10,.5))}
+.seal{position:absolute;left:50%;width:144px;height:144px;transform:translate(-50%,-50%);padding:0;border:0;background:none;
+  touch-action:none;cursor:grab;filter:drop-shadow(0 8px 18px rgba(30,6,10,.65))}
 .seal:active{cursor:grabbing}
+.seal::before{content:"";position:absolute;inset:-32%;border-radius:50%;background:radial-gradient(circle,rgba(255,224,130,.75),rgba(255,224,130,0) 68%);z-index:-1;animation:glow 2.2s ease-in-out infinite}
+@keyframes glow{0%,100%{transform:scale(.88);opacity:.55}50%{transform:scale(1.18);opacity:1}}
+
 .seal svg{width:100%;height:100%;display:block;overflow:visible}
 .seal .cap{position:absolute;left:50%;top:calc(100% + 6px);transform:translateX(-50%);white-space:nowrap;
-  font:600 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--ivory);text-shadow:0 1px 2px rgba(30,6,10,.6)}
-.seal .cap i{display:inline-block;font-style:normal;animation:nudge 1.6s ease-in-out infinite}
-@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+  font:600 12px/1 var(--cin);letter-spacing:.22em;text-transform:uppercase;color:#FFF6DE;text-shadow:0 1px 4px rgba(30,6,10,.85)}
+.seal .cap i{display:inline-block;font-style:normal;animation:nudge 1.4s ease-in-out infinite;font-weight:700;color:var(--gold-lt)}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+/* 3 Animated downward chevrons underneath the seal */
+.seal .chev{position:absolute;left:50%;top:calc(100% + 28px);transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.chev i{width:15px;height:15px;border-right:2.5px solid var(--gold-lt);border-bottom:2.5px solid var(--gold-lt);transform:rotate(45deg);margin-top:-6px;opacity:0;animation:chv 1.5s ease-in-out infinite}
+.chev i:nth-child(2){animation-delay:.2s}
+.chev i:nth-child(3){animation-delay:.4s}
+@keyframes chv{0%{opacity:0;transform:translateY(-8px) rotate(45deg)}50%{opacity:1}100%{opacity:0;transform:translateY(8px) rotate(45deg)}}
+
+/* Envelope Names Banner */
+#envnames{position:absolute;left:0;right:0;top:76%;text-align:center;z-index:3;pointer-events:none;color:#FFF7E5;text-shadow:0 2px 8px rgba(30,6,10,.8);transition:opacity .4s ease}
+#envnames .e1{font:600 clamp(10px,2.6vw,12px)/1 var(--cin);letter-spacing:.32em;color:var(--gold-lt);text-transform:uppercase}
+#envnames .nn{font:400 clamp(32px,9vw,52px)/1.2 var(--script);margin:6px 0 2px;padding:0 12px}
+#envnames .e2{font:400 clamp(16px,4.5vw,22px)/1.4 var(--yatra);color:#FFF4D4;letter-spacing:.08em}
+
+/* Twinkling stars on envelope */
+.tw{position:absolute;width:6px;height:6px;pointer-events:none;border-radius:50%;background:radial-gradient(circle,#FFF8D6,#E3BD5A 55%,transparent 72%);opacity:0;z-index:2;animation:twk 2.6s ease-in-out infinite}
+@keyframes twk{50%{opacity:.95;transform:scale(1.8)}}
+
 #env.leaving .flap{transition:transform .8s cubic-bezier(.5,0,.2,1)}
 #env.leaving #fl{transform:translateX(-30%)}
 #env.leaving #fr{transform:translateX(30%)}
@@ -151,14 +172,30 @@ a{color:inherit}
 .s-muhurat .mh-head{left:32%;right:32%;top:11%;bottom:auto;gap:0;justify-content:flex-start}
 .s-muhurat .mh-head .eyebrow{font-size:2.2cqw;letter-spacing:.14em;margin-top:-.8cqw}
 .s-muhurat h2{font:400 7.2cqw/1.7 var(--yatra);padding-inline:.12em}
-#scratchbox{position:relative;width:100%;height:30cqw;border-radius:2.4cqw;overflow:hidden;background:#FFFBF0;border:1px solid var(--sand-2);
+#scratchbox{position:relative;width:100%;height:33cqw;border-radius:2.4cqw;overflow:hidden;background:#FFFBF0;border:1px solid var(--sand-2);
   box-shadow:inset 0 2px 6px rgba(80,50,10,.18),0 10px 18px -12px rgba(80,50,10,.5)}
-.muh{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:1cqw;padding:0 2cqw}
-.muh .lab{font:400 6.2cqw/1.15 var(--script);color:var(--kumkum);white-space:nowrap}
-.muh .date{font:600 3.3cqw/1.3 var(--cin);letter-spacing:.1em;color:var(--sage-ink)}
-.muh .day{font:600 2.8cqw/1.3 var(--cin);letter-spacing:.26em;color:var(--sage-ink)}
-.muh .time{font:600 2.7cqw/1.3 var(--cin);letter-spacing:.24em;color:var(--gold-ink)}
-#scratch{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;transition:opacity .9s ease}
+.sw{position:relative;width:100%;height:100%;overflow:hidden;touch-action:pan-y}
+.swt{display:flex;height:100%;will-change:transform}
+.swp{flex:0 0 100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6cqw;text-align:center;padding:1cqw 2cqw 3cqw}
+.swp .lab{font:400 5.4cqw/1.1 var(--script);color:var(--kumkum);white-space:nowrap}
+.sw-date .dt-hero{display:flex;align-items:center;justify-content:center;gap:2cqw;margin:.3cqw 0}
+.sw-date .dt-day{font:600 2.8cqw/1.2 var(--cin);letter-spacing:.2em;color:var(--sage-ink)}
+.sw-date .dt-num{font:700 8.4cqw/1 var(--cin);letter-spacing:0}
+.sw-date .dt-mon{font:600 2.8cqw/1.2 var(--cin);letter-spacing:.18em;color:var(--sage-ink);text-align:left}
+.sw-date .deva-sub{font:400 3.2cqw/1.3 var(--yatra);color:var(--gold-ink);letter-spacing:.05em}
+
+.sw-time .tm-hero{font:700 7.8cqw/1.1 var(--cin);letter-spacing:.06em;margin:.3cqw 0}
+.sw-time .tm-sub{font:600 2.6cqw/1 var(--cin);letter-spacing:.26em;color:var(--sage-ink)}
+.sw-time .nakshatra{font:400 3.6cqw/1.3 var(--yatra);color:var(--kumkum);margin-top:.3cqw}
+
+.swd{position:absolute;left:50%;bottom:.8cqw;transform:translateX(-50%);display:flex;gap:1.4cqw;align-items:center;z-index:2}
+.swd i{width:1.6cqw;height:1.6cqw;border-radius:1cqw;background:var(--sand-2);cursor:pointer;transition:all .45s ease}
+.swd i.on{width:5cqw;background:var(--kumkum)}
+.swh{position:absolute;right:2cqw;bottom:.6cqw;font:600 1.9cqw/1 var(--cin);letter-spacing:.16em;color:var(--kumkum);animation:swn 1.4s ease-in-out infinite;pointer-events:none;z-index:2}
+@keyframes swn{0%,100%{transform:translateX(0)}50%{transform:translateX(-1.2cqw)}}
+.sw[data-done] .swh{opacity:0}
+
+#scratch{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;transition:opacity .9s ease;z-index:3}
 #scratch.gone{opacity:0;pointer-events:none}
 .revealbtn{background:none;border:0;padding:3px 10px;font:500 2.8cqw var(--body);color:var(--muted);text-decoration:underline;cursor:pointer}
 .cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2.6cqw;width:100%}
@@ -291,7 +328,25 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
 @keyframes dust{0%{transform:translate(0,0) scale(.6);opacity:0}15%{opacity:.6}100%{transform:translate(var(--dx,0px),-112vh) scale(1.3);opacity:0}}
 
 /* Envelope Seal Top Shloka Text */
-.seal .top{position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);white-space:nowrap;font:400 18px/1.6 var(--yatra);color:var(--gold-lt);text-shadow:0 2px 4px rgba(30,6,10,.8);letter-spacing:.05em}
+.seal .top{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font:400 clamp(16px,4.5vw,21px)/1.5 var(--yatra);color:var(--gold-lt);text-shadow:0 2px 6px rgba(30,6,10,.9);letter-spacing:.06em}
+
+/* Illusion of Screen 2 rising from down to up */
+.s-couple.illusion-peek{animation:illusionRise 1.6s cubic-bezier(.22,1,.36,1) forwards;z-index:10}
+@keyframes illusionRise{
+  0%{transform:translateY(0);box-shadow:none}
+  35%{transform:translateY(-130px);box-shadow:0 -25px 45px rgba(74,22,32,.45)}
+  65%{transform:translateY(-130px);box-shadow:0 -25px 45px rgba(74,22,32,.45)}
+  100%{transform:translateY(0);box-shadow:none}
+}
+.scrollhint.highlight{transform:translateX(-50%) scale(1.14);background:var(--kumkum);color:var(--ivory);box-shadow:0 0 25px rgba(232,163,23,.95)}
+
+/* Festive Marigold Toran / Garland */
+#garland{position:fixed;left:0;right:0;top:0;height:48px;z-index:62;pointer-events:none;transform-origin:50% 0;animation:sway 6s ease-in-out infinite alternate;filter:drop-shadow(0 2px 4px rgba(60,20,10,.35))}
+@keyframes sway{from{transform:skewX(-1.1deg)}to{transform:skewX(1.1deg)}}
+
+/* Interactive Sparkle Burst on Tap/Click */
+.sparkle-tap{position:fixed;pointer-events:none;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#FFF8D6,#E8A317 60%,transparent 80%);z-index:999;animation:sparkleFly .75s ease-out forwards}
+@keyframes sparkleFly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
 
 /* Scratch Card Hint */
 .scratch-cue{margin-top:1.2cqw;font:600 2.2cqw/1.4 var(--cin);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);display:flex;align-items:center;justify-content:center;gap:6px;animation:pulse 2s infinite ease-in-out}
@@ -325,8 +380,16 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   </svg>
   <button class="seal" id="seal" type="button" aria-label="Slide down to open the invitation">
     <span class="top deva" lang="mr">॥ श्री गणेशाय नमः ॥</span>
-    <span class="cap">Slide to open <i>↓</i></span>
+    <span class="cap">Slide down to open <i>↓</i></span>
+    <div class="chev" aria-hidden="true">
+      <i></i><i></i><i></i>
+    </div>
   </button>
+  <div id="envnames">
+    <p class="e1">WEDDING INVITATION</p>
+    <h1 class="nn gradtext">Harshada &amp; Sohan</h1>
+    <p class="e2 deva" lang="mr">॥ सस्नेह निमंत्रण ॥</p>
+  </div>
 </div>
 
 <button id="snd" type="button" aria-pressed="false" aria-label="Play the music" hidden>
@@ -336,6 +399,7 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
 </button>
 <audio id="bgm" src="Sajiri-Gojiri.mp3" preload="auto" loop></audio>
 
+<svg id="garland" viewBox="0 0 1200 48" preserveAspectRatio="none" aria-hidden="true" hidden></svg>
 <div id="prog" hidden aria-hidden="true"></div>
 <div class="dust" id="dust" aria-hidden="true"></div>
 
@@ -386,11 +450,28 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   </div>
   <div class="cnt">
     <div id="scratchbox">
-      <div class="muh">
-        <div class="lab">Lagna Shubh Muhurat</div>
-        <div class="date">02 DECEMBER 2026</div>
-        <div class="day">WEDNESDAY</div>
-        <div class="time">11:00 AM ONWARDS</div>
+      <div class="muh sw" id="muh-sw" data-sw>
+        <div class="swt">
+          <!-- Panel 1: Date -->
+          <div class="swp sw-date">
+            <div class="lab">Lagna Shubh Muhurat</div>
+            <div class="dt-hero">
+              <div class="dt-day">WEDNESDAY</div>
+              <div class="dt-num gradtext">02</div>
+              <div class="dt-mon">DECEMBER<br>2026</div>
+            </div>
+            <div class="deva-sub" lang="mr">॥ शुभ विवाह दिनांक ॥</div>
+          </div>
+          <!-- Panel 2: Time & Muhurat -->
+          <div class="swp sw-time">
+            <div class="lab">Shubh Lagna Muhurat</div>
+            <div class="tm-hero gradtext">11:00 AM</div>
+            <div class="tm-sub">MORNING ONWARDS</div>
+            <div class="nakshatra deva" lang="mr">हस्त नक्षत्र · गोरज मुहूर्त</div>
+          </div>
+        </div>
+        <div class="swd" aria-hidden="true"><i class="on"></i><i></i></div>
+        <span class="swh" aria-hidden="true">SWIPE ›</span>
       </div>
       <canvas id="scratch" aria-label="Scratch card. Drag a finger or mouse across it to reveal the muhurat."></canvas>
     </div>
@@ -495,6 +576,7 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
 (function(){
   document.documentElement.classList.add('locked');
   var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
   var P=function(id){return document.getElementById(id)};
   var clamp=function(v,a,b){return Math.min(b,Math.max(a,v))};
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -559,6 +641,7 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
     ['zl3','zm3'].forEach(function(i){P(i).setAttribute('d',c)});
     seal.style.top=y+'px';
     seal.style.opacity=String(1-clamp((p-.9)/.1,0,1));
+    var envn=P('envnames');if(envn)envn.style.opacity=String(1-clamp(p*2.2,0,1));
   }
   function layout(){
     if(!env.isConnected)return;
@@ -576,23 +659,27 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   }
   function openNow(){
     if(opened)return;opened=true;
+    stopTease();
     setPlaying(true);
     tween(yEnd,750,function(){
       env.classList.add('leaving');
       initReveal();petals();initDust();
       P('prog').hidden=false;onScroll();
+      var g=P('garland');if(g)g.removeAttribute('hidden');
       setTimeout(function(){
         env.remove();
         document.documentElement.classList.remove('locked');
         window.scrollTo(0,0);
         var s=P('snd');if(s&&audioOK)s.hidden=false;
         var d=P('nav-dock');if(d)d.classList.remove('hide');
+        // Trigger the illusion of second slide peeking from down to up!
+        setTimeout(triggerSecondSlidePeek, 1200);
       },reduce?0:820);
     });
   }
   var dragging=false,sy=0,sc=0,moved=0;
   seal.addEventListener('pointerdown',function(e){
-    if(opened)return;dragging=true;sy=e.clientY;sc=cur;moved=0;
+    if(opened)return;stopTease();dragging=true;sy=e.clientY;sc=cur;moved=0;
     if(anim){cancelAnimationFrame(anim);anim=null;}
     try{seal.setPointerCapture(e.pointerId)}catch(_){}
   });
@@ -604,7 +691,8 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   function release(){
     if(!dragging)return;dragging=false;
     var p=(cur-y0)/(yEnd-y0);
-    if(moved<5||p>.5)openNow();else tween(y0,350);
+    // Forgiving threshold: even a small swipe down (> 35px or p > 0.18) smoothly completes opening!
+    if(moved<5||p>.18||(cur-y0)>35)openNow();else tween(y0,350);
   }
   seal.addEventListener('pointerup',release);
   seal.addEventListener('pointercancel',release);
@@ -613,6 +701,30 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   });
   window.addEventListener('resize',layout);
   layout();
+
+  /* Automated tease demo of sliding seal down */
+  var teaseT=null,teasing=true;
+  function tease(){
+    if(!teasing||opened||dragging||reduce)return;
+    tween(y0+H*.13,650,function(){
+      setTimeout(function(){
+        if(!teasing||opened||dragging)return;
+        tween(y0,650,function(){teaseT=setTimeout(tease,2000);});
+      },280);
+    });
+  }
+  function stopTease(){teasing=false;clearTimeout(teaseT);}
+  teaseT=setTimeout(tease,1200);
+
+  /* Twinkling golden stars across the envelope */
+  (function(){
+    var i,t;
+    for(i=0;i<28;i++){
+      t=document.createElement('i');t.className='tw';
+      t.style.cssText='left:'+(Math.random()*96).toFixed(1)+'%;top:'+(Math.random()*96).toFixed(1)+'%;animation-delay:-'+(Math.random()*3).toFixed(1)+'s;animation-duration:'+(2+Math.random()*2.4).toFixed(1)+'s';
+      env.appendChild(t);
+    }
+  })();
 
   /* ===== Footer: Warli dancers ===== */
   (function(){
@@ -664,6 +776,7 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
     var b=P('revealbtn');if(b)b.hidden=true;
     var cue=P('scratch-cue');if(cue)cue.remove();
     petals();
+    if(window.runMuhSwipeDemo)window.runMuhSwipeDemo();
   }
   function pos(e){var r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
   function cleared(){
@@ -790,6 +903,148 @@ html.rv-on .rv.zoom:not(.in){transform:scale(.92);filter:blur(4px)}
   var hint=P('hint');
   hint.addEventListener('click',function(){var n=document.querySelector('.s-couple');if(n)n.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});});
   window.addEventListener('scroll',function(){hint.classList.toggle('gone',window.scrollY>40);},{passive:true});
+
+  /* ===== Illusion of Second Slide Peeking Upward ===== */
+  var peekIdleTimer=null;
+  function triggerSecondSlidePeek(){
+    if(window.scrollY>40||reduce)return;
+    var couple=document.querySelector('.s-couple');
+    var hintEl=P('hint');
+    if(!couple)return;
+    couple.classList.add('illusion-peek');
+    if(hintEl)hintEl.classList.add('highlight');
+    setTimeout(function(){
+      couple.classList.remove('illusion-peek');
+      if(hintEl)hintEl.classList.remove('highlight');
+      scheduleNextPeek();
+    },1600);
+  }
+  function scheduleNextPeek(){
+    clearTimeout(peekIdleTimer);
+    if(window.scrollY>40||reduce)return;
+    peekIdleTimer=setTimeout(triggerSecondSlidePeek,7500);
+  }
+  window.addEventListener('scroll',function(){
+    if(window.scrollY>40){
+      clearTimeout(peekIdleTimer);
+      var couple=document.querySelector('.s-couple');
+      if(couple)couple.classList.remove('illusion-peek');
+      var hintEl=P('hint');
+      if(hintEl)hintEl.classList.remove('highlight');
+    }
+  },{passive:true});
+
+  /* ===== Swipeable Date & Time Widget with 2-3 Demo Swipes ===== */
+  var muhSw=P('muh-sw');
+  if(muhSw){
+    muhSw._i=0;
+    muhSw._t=$('.swt',muhSw);
+    muhSw._d=$$('.swd i',muhSw);
+    muhSw._w=muhSw.clientWidth||300;
+    muhSw._userTouched=false;
+
+    function swSet(w,i,ms){
+      w._i=i;
+      w._t.style.transition=ms?'transform '+ms+'ms cubic-bezier(.22,.61,.36,1)':'none';
+      w._t.style.transform='translateX('+(-i*100)+'%)';
+      w._d.forEach(function(d,k){d.classList.toggle('on',k===i);});
+    }
+
+    var swDragging=false,swStartX=0,swCurX=0;
+    muhSw.addEventListener('pointerdown',function(e){
+      muhSw._userTouched=true;swDragging=true;swStartX=e.clientX;swCurX=0;
+      muhSw._w=muhSw.clientWidth||300;
+    });
+    muhSw.addEventListener('pointermove',function(e){
+      if(!swDragging)return;
+      var dx=e.clientX-swStartX;
+      swCurX=dx;
+      var base=-muhSw._i*muhSw._w;
+      var x=clamp(base+dx,-muhSw._w-25,25);
+      muhSw._t.style.transition='none';
+      muhSw._t.style.transform='translateX('+x+'px)';
+    });
+    function endSwDrag(){
+      if(!swDragging)return;swDragging=false;
+      var dx=swCurX,i=muhSw._i;
+      if(dx<-muhSw._w*.15)i=1;
+      else if(dx>muhSw._w*.15)i=0;
+      swSet(muhSw,i,420);
+      muhSw.setAttribute('data-done','');
+    }
+    muhSw.addEventListener('pointerup',endSwDrag);
+    muhSw.addEventListener('pointercancel',endSwDrag);
+
+    muhSw._d.forEach(function(dot,idx){
+      dot.addEventListener('click',function(e){
+        e.stopPropagation();
+        muhSw._userTouched=true;
+        swSet(muhSw,idx,450);
+        muhSw.setAttribute('data-done','');
+      });
+    });
+
+    function runMuhSwipeDemo(){
+      if(muhSw.hasAttribute('data-demo-done')||reduce)return;
+      muhSw.setAttribute('data-demo-done','true');
+      var demoSteps=[
+        [1000,1], // 1st swipe: to Time
+        [2600,0], // 2nd swipe: back to Date
+        [4100,1], // 3rd swipe: to Time
+        [5600,0]  // 4th swipe: back to Date
+      ];
+      demoSteps.forEach(function(s){
+        setTimeout(function(){
+          if(!muhSw._userTouched){
+            swSet(muhSw,s[1],750);
+          }
+        },s[0]);
+      });
+    }
+    window.runMuhSwipeDemo=runMuhSwipeDemo;
+
+    var swObs=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          runMuhSwipeDemo();
+          swObs.unobserve(entry.target);
+        }
+      });
+    },{threshold:0.35});
+    swObs.observe(muhSw);
+  }
+
+  /* ===== Traditional Festive Marigold Toran / Garland ===== */
+  (function(){
+    var g=P('garland');if(!g)return;
+    var s='',x;
+    for(x=0;x<=1200;x+=38){
+      s+='<path d="M'+x+' 0 C'+(x-6)+' 12 '+(x-8)+' 26 '+x+' 38 C'+(x+8)+' 26 '+(x+6)+' 12 '+x+' 0Z" fill="#2E7D32" opacity=".92"/>';
+      var col=(Math.floor(x/38)%2===0)?'#FFA000':'#E65100';
+      s+='<circle cx="'+x+'" cy="18" r="8.5" fill="'+col+'"/>';
+      s+='<circle cx="'+x+'" cy="18" r="4.5" fill="#FFD54F"/>';
+    }
+    s+='<path d="M0 8 Q600 24 1200 8" fill="none" stroke="#F57F17" stroke-width="2.5"/>';
+    g.innerHTML=s;
+  })();
+
+  /* ===== Interactive Golden Sparkle Particle Burst on Tap/Click ===== */
+  document.addEventListener('pointerdown',function(e){
+    if(reduce)return;
+    for(var i=0;i<6;i++){
+      var sp=document.createElement('i');
+      sp.className='sparkle-tap';
+      var angle=Math.random()*Math.PI*2;
+      var dist=18+Math.random()*32;
+      sp.style.left=e.clientX+'px';
+      sp.style.top=e.clientY+'px';
+      sp.style.setProperty('--tx',(Math.cos(angle)*dist).toFixed(1)+'px');
+      sp.style.setProperty('--ty',(Math.sin(angle)*dist).toFixed(1)+'px');
+      sp.style.animationDelay=(Math.random()*0.1).toFixed(2)+'s';
+      document.body.appendChild(sp);
+      setTimeout((function(el){return function(){el.remove();};})(sp),800);
+    }
+  },{passive:true});
 
   /* ===== Sohola timeline + venue ===== */
   var ICONS={
