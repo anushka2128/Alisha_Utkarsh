@@ -148,10 +148,31 @@ textarea{min-height:15cqw;resize:none}
 .status.err{color:var(--kumkum)}
 .wall{display:grid;gap:1.4cqw;width:100%;text-align:left;max-height:24cqw;overflow-y:auto;overscroll-behavior:contain;padding-right:2px}
 .bl{border-top:1px solid var(--sand-2);padding:1.6cqw 0}
+.bl-head{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:.4cqw}
 .bl p{font:italic 500 3.5cqw/1.35 var(--display);color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere}
 .bl .by{margin-top:.4cqw;font:600 1.8cqw var(--cin);letter-spacing:.14em;color:var(--gold-ink);text-transform:uppercase;overflow-wrap:anywhere}
+.bl-del{
+  background:rgba(255,251,240,.9);border:1px solid rgba(140,35,49,.35);border-radius:1.5cqw;
+  padding:2px 8px;font:600 max(11px,1.9cqw) var(--cin);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--kumkum);cursor:pointer;
+  display:inline-flex;align-items:center;gap:4px;line-height:1.3;
+  transition:all .2s ease;
+}
+.bl-del:hover{background:rgba(140,35,49,.1);border-color:var(--kumkum)}
+.bl-del:disabled{opacity:.4;cursor:wait}
 .chip{display:inline-block;font:600 1.6cqw var(--cin);letter-spacing:.2em;text-transform:uppercase;color:var(--kumkum);margin-bottom:.4cqw}
 .empty{border:1px dashed var(--sand-2);padding:3cqw;text-align:center;color:var(--muted);font:italic 500 3.3cqw/1.35 var(--display)}
+.wall-footer{display:flex;justify-content:center;align-items:center;width:100%;padding-top:1cqw;border-top:1px dashed var(--sand-2);margin-top:1cqw}
+.bt-export{
+  background:none;border:1px solid var(--gold-lt);outline:1px solid var(--sand);outline-offset:-3px;
+  border-radius:2cqw;padding:1.2cqw 3cqw;font:600 max(11px,2cqw) var(--cin);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold-ink);cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:rgba(255,253,246,.85);box-shadow:0 4px 12px -4px rgba(60,40,10,.15);
+  transition:all .2s ease;
+}
+.bt-export:hover{background:#fff;border-color:var(--gold);color:var(--kumkum);box-shadow:0 6px 16px -4px rgba(60,40,10,.25)}
+.bt-export:disabled{opacity:.5;cursor:wait}
 
 /* ---------- Envelope ---------- */
 #env{position:fixed;inset:0;z-index:100;overflow:hidden;background:var(--sage)}
@@ -468,12 +489,26 @@ html,body{background:var(--ground)}
           <div class="status" id="gb-status" role="status" aria-live="polite"></div>
         </form>
         <div class="wall" id="wall"></div>
+        <div class="wall-footer">
+          <button type="button" class="bt-export" id="gb-export" title="Download all blessings & ukhane in an Excel spreadsheet">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export All to Excel (.xlsx)
+          </button>
+        </div>
       </div>
     </div>
   </div></div>
 </section>
 
 </main>
+
+<!-- Firebase Realtime Shared Database & Anonymous Auth -->
+<script src="firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<!-- SheetJS library for exporting blessings to native Excel (.xlsx) -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <script>
 (function(){
@@ -844,57 +879,331 @@ html,body{background:var(--ground)}
   snd.addEventListener('click',function(){if(playing){playing=false;setSnd();fade(0);}else playSong();});
   document.addEventListener('visibilitychange',function(){if(document.hidden){if(playing)bgm.pause();}else if(playing)bgm.play().catch(function(){});});
 
-  /* ===== Blessings wall: shared store when available, local fallback ===== */
-  var db=null,uapi=null,canWrite=null;
+  /* ===== Blessings wall: Firebase Firestore shared store with local fallback ===== */
+  var db=null,auth=null,currentUid=null,lastWallItems=[];
+
   function lsGet(k){try{return JSON.parse(localStorage.getItem(k)||'[]');}catch(_){return [];}}
   function lsAdd(k,v){try{var a=lsGet(k);a.unshift(v);localStorage.setItem(k,JSON.stringify(a.slice(0,100)));}catch(_){}}
+
+  function getMyDocIds(){
+    try{return JSON.parse(localStorage.getItem('au-my-blessing-ids')||'[]');}catch(_){return [];}
+  }
+  function recordMyDocId(id){
+    if(!id)return;
+    try{
+      var a=getMyDocIds();
+      if(a.indexOf(id)===-1){a.push(id);localStorage.setItem('au-my-blessing-ids',JSON.stringify(a));}
+    }catch(_){}
+  }
+  function removeMyDocId(id){
+    if(!id)return;
+    try{
+      var a=getMyDocIds().filter(function(x){return x!==id;});
+      localStorage.setItem('au-my-blessing-ids',JSON.stringify(a));
+    }catch(_){}
+  }
+
+  function setStatus(msg,err){
+    var s=P('gb-status');if(!s)return;
+    s.textContent=msg;s.className='status'+(err?' err':'');
+  }
+
   function renderWall(items){
-    var w=P('wall');w.textContent='';
-    if(!items.length){
-      var e=document.createElement('div');e.className='empty';
-      e.textContent='No blessings yet. Be the first to write one for Alisha and Utkarsh.';w.appendChild(e);return;
+    lastWallItems=items||[];
+    var w=P('wall');if(!w)return;
+    w.textContent='';
+    if(!items||!items.length){
+      var e=document.createElement('div');
+      e.className='empty';
+      e.textContent='No blessings yet. Be the first to write one for Alisha and Utkarsh.';
+      w.appendChild(e);
+      return;
     }
+
+    var myIds=getMyDocIds();
     items.forEach(function(it){
-      var d=document.createElement('div');d.className='bl';
-      var c=document.createElement('span');c.className='chip';c.textContent=String(it.type||'Blessing');
-      var p=document.createElement('p');p.textContent=String(it.msg||'');
-      var b=document.createElement('div');b.className='by';b.textContent='— '+String(it.name||'A well-wisher');
-      d.appendChild(c);d.appendChild(p);d.appendChild(b);w.appendChild(d);
+      var d=document.createElement('div');
+      d.className='bl';
+
+      var head=document.createElement('div');
+      head.className='bl-head';
+
+      var c=document.createElement('span');
+      c.className='chip';
+      c.textContent=String(it.type||'Blessing');
+      head.appendChild(c);
+
+      // Only the author can delete: button appears only on the guest's own posts
+      var isAuthor=Boolean((currentUid&&it.authorId&&it.authorId===currentUid)||(it.id&&myIds.indexOf(it.id)!==-1));
+      if(isAuthor){
+        var delBtn=document.createElement('button');
+        delBtn.type='button';
+        delBtn.className='bl-del';
+        delBtn.title='Delete your post';
+        delBtn.innerHTML='<span aria-hidden="true">✕</span> Delete';
+        delBtn.addEventListener('click',function(ev){
+          ev.stopPropagation();
+          var postName=it.type==='Ukhana'?'ukhana':'blessing';
+          if(!confirm('Are you sure you want to delete your '+postName+' from the wall?'))return;
+          delBtn.disabled=true;
+          delBtn.textContent='Deleting...';
+
+          if(db&&it.id){
+            db.collection('blessings').doc(it.id).delete().then(function(){
+              removeMyDocId(it.id);
+              setStatus('Your note was removed from the wall.');
+            }).catch(function(err){
+              console.error('Delete error:',err);
+              delBtn.disabled=false;
+              delBtn.innerHTML='<span aria-hidden="true">✕</span> Delete';
+              setStatus('Could not delete: '+(err.code==='permission-denied'?'Only the author can delete this post.':(err.message||'Error')),true);
+            });
+          }else{
+            var remaining=lsGet('au-blessings').filter(function(x){return x.id!==it.id&&x.ts!==it.ts;});
+            localStorage.setItem('au-blessings',JSON.stringify(remaining));
+            removeMyDocId(it.id);
+            renderWall(remaining);
+            setStatus('Your note was removed from the wall.');
+          }
+        });
+        head.appendChild(delBtn);
+      }
+
+      var p=document.createElement('p');
+      p.textContent=String(it.msg||'');
+
+      var b=document.createElement('div');
+      b.className='by';
+      b.textContent='— '+String(it.name||'A well-wisher');
+
+      d.appendChild(head);
+      d.appendChild(p);
+      d.appendChild(b);
+      w.appendChild(d);
     });
   }
+
+  // Initial render from local cache while DB initializes
   renderWall(lsGet('au-blessings'));
-  function setStatus(msg,err){var s=P('gb-status');s.textContent=msg;s.className='status'+(err?' err':'');}
+
+  function ensureAuth(){
+    if(!auth)return Promise.resolve(null);
+    if(auth.currentUser)return Promise.resolve(auth.currentUser);
+    return auth.signInAnonymously().then(function(cred){
+      currentUid=cred.user.uid;
+      return cred.user;
+    });
+  }
+
+  // Handle post submission
   P('gbform').addEventListener('submit',function(e){
     e.preventDefault();
     var name=P('gb-name').value.trim(),msg=P('gb-msg').value.trim();
-    if(!name||msg.length<3){setStatus('Please add your name and a short message.',true);return;}
-    var entry={name:name.slice(0,60),type:P('gb-type').value,msg:msg.slice(0,400),ts:Date.now()};
-    var btn=P('gb-send');btn.disabled=true;
+    if(!name||msg.length<3){
+      setStatus('Please add your name and a short message.',true);
+      return;
+    }
+    var btn=P('gb-send');
+    btn.disabled=true;
+    btn.textContent='Posting...';
+
     var done=function(shared){
-      P('gb-msg').value='';btn.disabled=false;
-      setStatus(shared?'Thank you. Your note is on the wall.':'Thank you. Your note is saved on this device only.');
+      P('gb-msg').value='';
+      btn.disabled=false;
+      btn.textContent='Post to the wall';
+      setStatus(shared?'Thank you! Your note is on the wall.':'Thank you! Your note is saved on this device.');
     };
-    if(db&&canWrite!==false){
-      db.collection('blessings').add(entry).then(function(){done(true);},function(err){
+
+    if(db){
+      ensureAuth().then(function(user){
+        var uid=(user&&user.uid)||currentUid||('anon_'+Math.random().toString(36).slice(2,10));
+        currentUid=uid;
+
+        var entry={
+          name:name.slice(0,60),
+          type:P('gb-type').value==='Ukhana'?'Ukhana':'Blessing',
+          msg:msg.slice(0,400),
+          ts:Date.now(),
+          authorId:uid
+        };
+
+        return db.collection('blessings').add(entry).then(function(docRef){
+          recordMyDocId(docRef.id);
+          done(true);
+        });
+      }).catch(function(err){
         btn.disabled=false;
-        if(err&&err.code==='invalid_argument'){canWrite=false;setStatus('Posting is open to invited guests. Ask Alisha or Utkarsh for contributor access.',true);}
-        else setStatus('Could not post just now. Please try again in a moment.',true);
+        btn.textContent='Post to the wall';
+        console.error('Post error:',err);
+        setStatus('Could not post blessing: '+(err.message||'Please try again.'),true);
       });
-    }else if(db){
-      btn.disabled=false;setStatus('Posting is open to invited guests. Ask Alisha or Utkarsh for contributor access.',true);
     }else{
-      lsAdd('au-blessings',entry);renderWall(lsGet('au-blessings'));done(false);
+      var entry={
+        name:name.slice(0,60),
+        type:P('gb-type').value==='Ukhana'?'Ukhana':'Blessing',
+        msg:msg.slice(0,400),
+        ts:Date.now(),
+        authorId:currentUid||('anon_'+Math.random().toString(36).slice(2,10))
+      };
+      entry.id='loc_'+Date.now();
+      recordMyDocId(entry.id);
+      lsAdd('au-blessings',entry);
+      renderWall(lsGet('au-blessings'));
+      done(false);
     }
   });
-  (function(){
-    var c=window.claude;if(!c||!c.use)return;
-    Promise.all([c.use('db').catch(function(){return null;}),c.use('user').catch(function(){return null;})]).then(function(r){
-      db=r[0];uapi=r[1];if(!db)return;
-      Promise.resolve(uapi&&uapi.can?uapi.can('data.write'):null).then(function(v){canWrite=(v===true||v===false)?v:null;}).catch(function(){});
-      db.collection('blessings').orderBy('ts','desc').limit(100).onSnapshot(function(snap){
-        renderWall(snap.docs.map(function(d){return d.data();}));
-      },function(){renderWall(lsGet('au-blessings'));});
+
+  // Handle Excel Export of all blessings and ukhane
+  var expBtn=P('gb-export');
+  if(expBtn){
+    expBtn.addEventListener('click',function(e){
+      e.stopPropagation();
+      expBtn.disabled=true;
+      var origText=expBtn.innerHTML;
+      expBtn.textContent='Preparing Excel...';
+
+      var handleExportData=function(list){
+        if(!list||!list.length){
+          expBtn.disabled=false;
+          expBtn.innerHTML=origText;
+          setStatus('No blessings or ukhane to export yet.',true);
+          return;
+        }
+
+        var exportRows=list.map(function(item,idx){
+          var d=new Date(item.ts||Date.now());
+          var dateStr=d.toLocaleString('en-IN',{
+            year:'numeric',month:'short',day:'numeric',
+            hour:'2-digit',minute:'2-digit',hour12:true
+          });
+          return {
+            "Sr. No.":idx+1,
+            "Date & Time":dateStr,
+            "Category":item.type||"Blessing",
+            "Guest Name":item.name||"A well-wisher",
+            "Blessing / Ukhana":item.msg||""
+          };
+        });
+
+        // 1. If SheetJS XLSX library is available, export real .xlsx
+        if(window.XLSX&&XLSX.utils){
+          try{
+            var ws=XLSX.utils.json_to_sheet(exportRows);
+            ws['!cols']=[
+              {wch:8},
+              {wch:22},
+              {wch:14},
+              {wch:25},
+              {wch:60}
+            ];
+            var wb=XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb,ws,"Blessings & Ukhane");
+            XLSX.writeFile(wb,"Alisha_Utkarsh_Blessings.xlsx");
+            expBtn.disabled=false;
+            expBtn.innerHTML=origText;
+            setStatus('Excel sheet downloaded successfully!');
+            return;
+          }catch(err){
+            console.warn("SheetJS error, falling back to CSV:",err);
+          }
+        }
+
+        // 2. Fallback: UTF-8 BOM CSV (opens seamlessly in Microsoft Excel with full Unicode/Devanagari support)
+        try{
+          var headers=["Sr. No.","Date & Time","Category","Guest Name","Blessing / Ukhana"];
+          var csvLines=[headers.join(",")];
+          exportRows.forEach(function(row){
+            var line=[
+              row["Sr. No."],
+              '"'+String(row["Date & Time"]).replace(/"/g,'""')+'"',
+              '"'+String(row["Category"]).replace(/"/g,'""')+'"',
+              '"'+String(row["Guest Name"]).replace(/"/g,'""')+'"',
+              '"'+String(row["Blessing / Ukhana"]).replace(/"/g,'""')+'"'
+            ];
+            csvLines.push(line.join(","));
+          });
+          var blob=new Blob(["\uFEFF"+csvLines.join("\r\n")],{type:"text/csv;charset=utf-8;"});
+          var url=URL.createObjectURL(blob);
+          var a=document.createElement("a");
+          a.href=url;
+          a.download="Alisha_Utkarsh_Blessings.csv";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          expBtn.disabled=false;
+          expBtn.innerHTML=origText;
+          setStatus('Excel CSV downloaded successfully!');
+        }catch(csvErr){
+          console.error("Export error:",csvErr);
+          expBtn.disabled=false;
+          expBtn.innerHTML=origText;
+          setStatus('Could not export to Excel: '+csvErr.message,true);
+        }
+      };
+
+      if(db){
+        // Fetch ALL blessings from Firestore (chronological order)
+        db.collection('blessings').orderBy('ts','asc').get().then(function(snapshot){
+          var allItems=snapshot.docs.map(function(doc){return doc.data();});
+          handleExportData(allItems);
+        }).catch(function(err){
+          console.error('Fetch all for export error:',err);
+          handleExportData(lsGet('au-blessings'));
+        });
+      }else{
+        handleExportData(lsGet('au-blessings'));
+      }
     });
+  }
+
+  // Initialize Firebase Firestore and Anonymous Authentication
+  (function initFirebase(){
+    var cfg=window.FIREBASE_CONFIG;
+    if(!cfg||!cfg.projectId||cfg.projectId==="YOUR_PROJECT_ID"||typeof firebase==="undefined"){
+      console.log("Firebase not configured yet or offline; running in local storage fallback mode.");
+      return;
+    }
+    try{
+      if(!firebase.apps.length){
+        firebase.initializeApp(cfg);
+      }
+      auth=firebase.auth();
+      db=firebase.firestore();
+
+      // Anonymous authentication for each guest device
+      auth.signInAnonymously().catch(function(err){
+        console.warn("Anonymous auth warning:",err);
+      });
+
+      auth.onAuthStateChanged(function(user){
+        if(user){
+          currentUid=user.uid;
+          if(lastWallItems.length){
+            renderWall(lastWallItems);
+          }
+        }
+      });
+
+      // Stack of 10: newest 10 posts, newest on top. Real-time live on every phone without refresh.
+      db.collection('blessings')
+        .orderBy('ts','desc')
+        .limit(10)
+        .onSnapshot(function(snap){
+          var items=snap.docs.map(function(d){
+            var data=d.data();
+            data.id=d.id;
+            return data;
+          });
+          renderWall(items);
+        },function(err){
+          console.error("Firestore onSnapshot error:",err);
+          renderWall(lsGet('au-blessings'));
+        });
+    }catch(err){
+      console.error("Firebase init error:",err);
+      renderWall(lsGet('au-blessings'));
+    }
   })();
 })();
 </script>
