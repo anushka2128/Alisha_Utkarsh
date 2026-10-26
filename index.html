@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+﻿<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Alisha &amp; Utkarsh</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -310,6 +310,84 @@ html,body{background:var(--ground)}
 #envnames .nn{font-size:clamp(28px,8.2vw,44px)}
 .fing{position:absolute;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .3s;z-index:3;border:2px solid rgba(179,138,45,.85);background:radial-gradient(circle,#fff 0 22%,rgba(255,255,255,.4) 25% 62%,rgba(255,255,255,0) 64%);box-shadow:0 2px 8px rgba(90,60,20,.4)}
 @media (prefers-reduced-motion:reduce){#garland,.seal::before,.spin,.chev i,.tw,.swh,#hint{animation:none}}
+
+/* ---------- RSVP Floating Button & Modal ---------- */
+#rsvp-fab{position:fixed;z-index:65;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:8px;padding:0 18px 0 14px;height:46px;border-radius:999px;border:1px solid var(--kumkum);background:rgba(251,246,233,.96);color:var(--kumkum);font:600 13px/1 var(--body);letter-spacing:.06em;cursor:pointer;box-shadow:0 4px 18px rgba(140,35,49,.22);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:transform .2s var(--ease),box-shadow .2s ease;white-space:nowrap}
+#rsvp-fab:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(140,35,49,.3)}
+#rsvp-fab svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#rsvp-fab.submitted{border-color:var(--sage-deep);color:var(--sage-deep);background:rgba(241,231,207,.96)}
+#rsvp-overlay{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;padding:env(safe-area-inset-top,0px) max(0px,env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(0px,env(safe-area-inset-left,0px));pointer-events:none;opacity:0;transition:opacity .35s ease}
+#rsvp-overlay.open{pointer-events:auto;opacity:1}
+#rsvp-backdrop{position:absolute;inset:0;background:rgba(43,30,15,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+#rsvp-sheet{position:relative;width:100%;max-width:480px;max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;background:var(--ivory);border-radius:2.8cqw 2.8cqw 0 0;padding:28px 24px calc(28px + env(safe-area-inset-bottom,0px));box-shadow:0 -12px 48px rgba(60,35,10,.3);transform:translateY(100%);transition:transform .4s cubic-bezier(.25,.86,.32,1)}
+#rsvp-overlay.open #rsvp-sheet{transform:translateY(0)}
+#rsvp-sheet-handle{width:40px;height:4px;border-radius:2px;background:var(--sand-2);margin:0 auto 20px}
+#rsvp-sheet h2{font:600 5.4cqw/1.2 var(--display);color:var(--kumkum);text-align:center;margin-bottom:4px}
+#rsvp-sheet .rsvp-sub{font:italic 400 3.2cqw/1.4 var(--display);color:var(--muted);text-align:center;margin-bottom:20px}
+.rsvp-field{margin-bottom:16px}
+.rsvp-field label{font:600 max(12px,2cqw)/1.3 var(--body);letter-spacing:.05em;color:var(--sage-ink);display:block;margin-bottom:6px}
+.rsvp-field input[type=text]{width:100%;font:400 max(16px,3cqw)/1.35 var(--body);color:var(--ink);background:var(--field);border:1px solid var(--sand-2);border-radius:12px;padding:12px 16px;outline:none;transition:border-color .2s}
+.rsvp-field input[type=text]:focus{border-color:var(--kumkum)}
+.rsvp-toggle-row{display:flex;gap:10px;width:100%}
+.rsvp-toggle{flex:1;min-height:max(48px,10cqw);border:1.5px solid var(--sand-2);border-radius:12px;background:transparent;font:500 max(13px,2.6cqw)/1.2 var(--body);color:var(--muted);cursor:pointer;transition:all .2s ease;display:flex;align-items:center;justify-content:center;gap:7px}
+.rsvp-toggle svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rsvp-toggle.sel-yes{border-color:var(--sage-deep);background:rgba(111,135,105,.12);color:var(--sage-deep);font-weight:700}
+.rsvp-toggle.sel-no{border-color:var(--kumkum);background:rgba(140,35,49,.08);color:var(--kumkum);font-weight:700}
+.rsvp-stepper{display:flex;align-items:center;gap:0;border:1.5px solid var(--sand-2);border-radius:12px;overflow:hidden;width:fit-content}
+.rsvp-stepper button{width:44px;height:44px;border:0;background:transparent;font:600 20px/1 var(--body);color:var(--ink);cursor:pointer;display:grid;place-items:center;transition:background .15s}
+.rsvp-stepper button:hover{background:var(--sand)}
+.rsvp-stepper span{min-width:40px;text-align:center;font:600 max(15px,3cqw)/1 var(--body);color:var(--ink);padding:0 4px}
+.rsvp-pills{display:flex;gap:8px;flex-wrap:wrap}
+.rsvp-pill{padding:8px 16px;border:1.5px solid var(--sand-2);border-radius:999px;font:500 max(13px,2.4cqw)/1 var(--body);color:var(--muted);cursor:pointer;background:transparent;transition:all .18s ease;white-space:nowrap}
+.rsvp-pill.active{border-color:var(--gold);background:rgba(179,138,45,.12);color:var(--gold-ink);font-weight:700}
+.rsvp-events{display:flex;flex-direction:column;gap:8px}
+.rsvp-event-check{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--sand-2);border-radius:12px;cursor:pointer;transition:border-color .18s}
+.rsvp-event-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--kumkum);cursor:pointer;flex:none}
+.rsvp-event-check .ev-label{font:500 max(13px,2.4cqw)/1.3 var(--body);color:var(--ink)}
+.rsvp-event-check .ev-date{font:400 max(11px,2cqw)/1 var(--body);color:var(--muted);margin-top:2px}
+.rsvp-event-check:has(input:checked){border-color:var(--kumkum);background:rgba(140,35,49,.04)}
+.rsvp-submit{width:100%;min-height:max(52px,11cqw);border-radius:12px;border:0;background:var(--kumkum);color:var(--ivory);font:600 max(15px,3cqw)/1 var(--body);letter-spacing:.04em;cursor:pointer;margin-top:20px;transition:opacity .2s,transform .15s}
+.rsvp-submit:hover{opacity:.9;transform:translateY(-1px)}
+.rsvp-submit:disabled{opacity:.55;cursor:wait;transform:none}
+#rsvp-confirm{display:none;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:8px 0 4px}
+#rsvp-confirm .rsvp-check-icon{width:64px;height:64px;background:rgba(111,135,105,.15);border-radius:50%;display:flex;align-items:center;justify-content:center}
+#rsvp-confirm .rsvp-check-icon svg{width:32px;height:32px;fill:none;stroke:var(--sage-deep);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#rsvp-confirm h3{font:600 5.2cqw/1.2 var(--display);color:var(--sage-deep)}
+#rsvp-confirm p{font:italic 400 3.2cqw/1.5 var(--display);color:var(--muted)}
+#rsvp-confirm .rsvp-cal-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:999px;border:1.5px solid var(--gold);color:var(--gold-ink);background:rgba(255,253,246,.9);font:600 max(13px,2.4cqw)/1 var(--body);text-decoration:none;transition:background .2s}
+#rsvp-confirm .rsvp-cal-btn:hover{background:#fff}
+#rsvp-confirm .rsvp-cal-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rsvp-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:0;background:rgba(0,0,0,.06);border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--muted)}
+.rsvp-close svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.rsvp-err{color:var(--kumkum);font:500 max(12px,2.2cqw)/1.3 var(--body);min-height:1.2em;text-align:center;margin-top:6px}
+
+/* ---------- Admin Dashboard ---------- */
+#admin-btn{position:fixed;z-index:65;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));padding:6px 12px;border:1px solid rgba(140,35,49,.25);border-radius:999px;background:rgba(251,246,233,.92);font:600 11px/1 var(--body);letter-spacing:.08em;color:var(--sage-ink);cursor:pointer;text-transform:uppercase;box-shadow:0 2px 10px rgba(46,61,45,.12);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:all .2s ease}
+#admin-btn:hover{color:var(--kumkum);border-color:var(--kumkum);background:#fff}
+#admin-overlay{position:fixed;inset:0;z-index:210;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;opacity:0;transition:opacity .3s ease}
+#admin-overlay.open{pointer-events:auto;opacity:1}
+#admin-back{position:absolute;inset:0;background:rgba(43,30,15,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+#admin-panel{position:relative;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;background:var(--ivory);border-radius:20px;padding:26px 22px;box-shadow:0 16px 48px rgba(60,35,10,.35);transform:scale(.94);transition:transform .3s cubic-bezier(.25,.86,.32,1)}
+#admin-overlay.open #admin-panel{transform:scale(1)}
+#admin-panel h3{font:600 24px/1.2 var(--display);color:var(--kumkum);text-align:center;margin-bottom:4px}
+#admin-panel .adm-sub{font:italic 400 14px/1.4 var(--display);color:var(--muted);text-align:center;margin-bottom:18px}
+#admin-pin-row{display:flex;gap:8px;margin-bottom:12px}
+#admin-pin{flex:1;font:600 18px/1 var(--body);color:var(--ink);background:var(--field);border:1px solid var(--sand-2);border-radius:12px;padding:12px 16px;text-align:center;letter-spacing:.25em;outline:none}
+#admin-pin:focus{border-color:var(--kumkum)}
+#admin-pin-btn{min-width:64px;height:46px;border:0;border-radius:12px;background:var(--kumkum);color:var(--ivory);font:600 13px/1 var(--body);cursor:pointer}
+#admin-err{color:var(--kumkum);font:500 12px/1.3 var(--body);text-align:center;min-height:1.2em;margin-bottom:8px}
+#admin-stats{display:none;flex-direction:column;gap:10px}
+.adm-stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--sand)}
+.adm-stat-row:last-child{border-bottom:0}
+.adm-stat-label{font:600 12px/1 var(--body);color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.adm-stat-val{font:700 20px/1 var(--display);color:var(--kumkum)}
+#admin-guest-list{max-height:200px;overflow-y:auto;overscroll-behavior:contain;margin-top:6px;display:flex;flex-direction:column;gap:6px}
+.adm-guest{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:rgba(241,231,207,.65)}
+.adm-guest-name{font:600 13px/1.2 var(--body);color:var(--ink)}
+.adm-guest-info{font:500 11px/1.3 var(--body);color:var(--muted);text-align:right}
+.adm-refresh{width:100%;margin-top:12px;padding:10px;border:1px solid var(--sand-2);border-radius:10px;background:rgba(255,253,246,.9);font:600 13px/1 var(--body);color:var(--gold-ink);cursor:pointer}
+.adm-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border:0;background:rgba(0,0,0,.06);border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--muted);font-size:15px}
+@media (prefers-reduced-motion:reduce){#rsvp-overlay,#rsvp-sheet,#rsvp-fab,#admin-overlay,#admin-panel{transition:none}}
 </style>
 
 <!-- ================= ENVELOPE ================= -->
@@ -323,6 +401,125 @@ html,body{background:var(--ground)}
   </svg>
   <button class="seal" id="seal" type="button" aria-label="Slide down to open the invitation"><span class="top" lang="mr">॥ श्री गणेशाय नमः ॥</span><span class="cap">Swipe down to open</span><span class="chev"><i></i><i></i><i></i></span></button>
 <div id="envnames"><div class="e1">WEDDING INVITATION</div><div class="nn">Alisha &amp; Utkarsh</div><div class="e2">11 · 12 DECEMBER 2026</div><svg class="or" viewBox="0 0 200 18" aria-hidden="true"><g fill="none" stroke="#B38A2D" stroke-width="1"><path d="M4 9H84M116 9H196"/><path d="M100 2L107 9L100 16L93 9Z" fill="#DDBF70"/></g></svg></div></div>
+
+<!-- ================= RSVP FLOATING BUTTON ================= -->
+<button id="rsvp-fab" type="button" aria-label="Are You Coming?" hidden>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+  Are You Coming?
+</button>
+
+<!-- ================= RSVP MODAL SHEET ================= -->
+<div id="rsvp-overlay" role="dialog" aria-modal="true" aria-label="Attendance Form" hidden>
+  <div id="rsvp-backdrop"></div>
+  <div id="rsvp-sheet">
+    <button class="rsvp-close" id="rsvp-close" aria-label="Close RSVP form"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div id="rsvp-sheet-handle"></div>
+    <h2>Are You Coming? 🌸</h2>
+    <p class="rsvp-sub">Will you be celebrating with us?</p>
+
+    <div id="rsvp-form-body">
+      <!-- Guest Name -->
+      <div class="rsvp-field">
+        <label for="rsvp-name">Your Name / Family Name</label>
+        <input type="text" id="rsvp-name" placeholder="e.g. Sharma Family" maxlength="80" autocomplete="name">
+      </div>
+
+      <!-- Attendance Toggle -->
+      <div class="rsvp-field">
+        <label>Will you be attending?</label>
+        <div class="rsvp-toggle-row">
+          <button type="button" class="rsvp-toggle" id="rsvp-yes">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Yes, celebrating!
+          </button>
+          <button type="button" class="rsvp-toggle" id="rsvp-no">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Regrets
+          </button>
+        </div>
+      </div>
+
+      <!-- Guest Count (shown only if attending) -->
+      <div class="rsvp-field" id="rsvp-count-row" hidden>
+        <label>Number of guests attending</label>
+        <div class="rsvp-stepper">
+          <button type="button" id="rsvp-dec" aria-label="Decrease">−</button>
+          <span id="rsvp-count">1</span>
+          <button type="button" id="rsvp-inc" aria-label="Increase">+</button>
+        </div>
+      </div>
+
+      <!-- Food Preference (shown only if attending) -->
+      <div class="rsvp-field" id="rsvp-food-row" hidden>
+        <label>Food Preference</label>
+        <div class="rsvp-pills">
+          <button type="button" class="rsvp-pill active" data-food="Vegetarian">🌿 Vegetarian</button>
+          <button type="button" class="rsvp-pill" data-food="Non-Vegetarian">🍗 Non-Vegetarian</button>
+        </div>
+      </div>
+
+      <!-- Events (shown only if attending) -->
+      <div class="rsvp-field" id="rsvp-events-row" hidden>
+        <label>Which events will you join?</label>
+        <div class="rsvp-events">
+          <label class="rsvp-event-check">
+            <input type="checkbox" id="rsvp-ev1" value="Engagement & Sangeet – Dec 11" checked>
+            <div><div class="ev-label">Engagement, Haldi &amp; Sangeet</div><div class="ev-date">Thursday, 11 December 2026</div></div>
+          </label>
+          <label class="rsvp-event-check">
+            <input type="checkbox" id="rsvp-ev2" value="Wedding Day – Dec 12" checked>
+            <div><div class="ev-label">Wedding Day</div><div class="ev-date">Friday, 12 December 2026</div></div>
+          </label>
+        </div>
+      </div>
+
+      <p class="rsvp-err" id="rsvp-err"></p>
+      <button type="button" class="rsvp-submit" id="rsvp-submit">Yes, Count Me In! 🎉</button>
+    </div>
+
+    <!-- Confirmation Card (hidden until submitted) -->
+    <div id="rsvp-confirm">
+      <div class="rsvp-check-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h3>धन्यवाद! 🌸</h3>
+      <p id="rsvp-confirm-msg">Your RSVP has been received. We look forward to celebrating with you!</p>
+      <button type="button" id="rsvp-edit-btn" class="rsvp-cal-btn" style="cursor:pointer;border-color:var(--kumkum);color:var(--kumkum);margin-top:4px;">
+        <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Change / Update My Response
+      </button>
+      <a id="rsvp-cal-link" class="rsvp-cal-btn" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Add to Google Calendar
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ADMIN BUTTON ================= -->
+<button id="admin-btn" type="button" aria-label="Family Login" hidden>Family View</button>
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+<div id="admin-overlay" role="dialog" aria-modal="true" aria-label="Family Attendance Dashboard" hidden>
+  <div id="admin-back"></div>
+  <div id="admin-panel">
+    <button class="adm-close" id="admin-close" aria-label="Close admin">✕</button>
+    <h3>Family View</h3>
+    <p class="adm-sub">Live attendance stats · Enter 4-digit PIN</p>
+    <div id="admin-pin-row">
+      <input type="password" id="admin-pin" maxlength="4" placeholder="••••" inputmode="numeric" autocomplete="off">
+      <button type="button" id="admin-pin-btn">View</button>
+    </div>
+    <p id="admin-err"></p>
+    <div id="admin-stats">
+      <div class="adm-stat-row"><span class="adm-stat-label">Total Responses</span><span class="adm-stat-val" id="adm-total">—</span></div>
+      <div class="adm-stat-row"><span class="adm-stat-label">✅ Confirmed Guests</span><span class="adm-stat-val" id="adm-yes">—</span></div>
+      <div class="adm-stat-row"><span class="adm-stat-label">🌿 Vegetarian</span><span class="adm-stat-val" id="adm-veg">—</span></div>
+      <div class="adm-stat-row"><span class="adm-stat-label">🍗 Non-Vegetarian</span><span class="adm-stat-val" id="adm-nonveg">—</span></div>
+      <div class="adm-stat-row"><span class="adm-stat-label">❌ Regrets</span><span class="adm-stat-val" id="adm-no">—</span></div>
+      <div id="admin-guest-list"></div>
+      <button class="adm-refresh" id="adm-refresh" type="button">🔄 Refresh Data</button>
+    </div>
+  </div>
+</div>
 
 <audio id="bgm" loop preload="auto" src="Sajiri-Gojiri.mp3"></audio>
 <svg id="garland" hidden aria-hidden="true" width="100%" height="64"><defs><pattern id="gp" width="96" height="64" patternUnits="userSpaceOnUse"><path d="M0 6Q48 46 96 6" fill="none" stroke="#4F7A3F" stroke-width="1.8"/><circle cx="12.0" cy="14.8" r="5.4" fill="#E26D1F"/><circle cx="12.0" cy="14.8" r="2.1" fill="#FFD66B"/><circle cx="24.0" cy="21.0" r="5.4" fill="#E8A317"/><circle cx="24.0" cy="21.0" r="2.1" fill="#FFD66B"/><circle cx="36.0" cy="24.8" r="5.4" fill="#E26D1F"/><circle cx="36.0" cy="24.8" r="2.1" fill="#FFD66B"/><circle cx="48.0" cy="26.0" r="5.4" fill="#E8A317"/><circle cx="48.0" cy="26.0" r="2.1" fill="#FFD66B"/><circle cx="60.0" cy="24.8" r="5.4" fill="#E26D1F"/><circle cx="60.0" cy="24.8" r="2.1" fill="#FFD66B"/><circle cx="72.0" cy="21.0" r="5.4" fill="#E8A317"/><circle cx="72.0" cy="21.0" r="2.1" fill="#FFD66B"/><circle cx="84.0" cy="14.8" r="5.4" fill="#E26D1F"/><circle cx="84.0" cy="14.8" r="2.1" fill="#FFD66B"/><path d="M48.0 31.0V39.0" stroke="#B58E36" stroke-width="1.4"/><circle cx="48.0" cy="42.0" r="3.4" fill="#D63F7C"/></pattern></defs><rect width="100%" height="64" fill="url(#gp)"/></svg>
@@ -463,7 +660,10 @@ html,body{background:var(--ground)}
       <p class="vn rv" style="--i:5;font-size:5cqw;margin-top:.6cqw"><svg data-pin viewBox="0 0 24 24" aria-hidden="true"></svg>Nature Fun Resort</p>
       <div class="btns rv" style="--i:6">
         <a class="bt fill" id="maps" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Open in Google Maps</a>
-        <a class="bt" id="cal" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg>Add wedding to Google Calendar</a>
+        <button type="button" class="bt fill rv" onclick="document.getElementById('rsvp-overlay').removeAttribute('hidden');requestAnimationFrame(function(){document.getElementById('rsvp-overlay').classList.add('open');});document.body.style.overflow='hidden';" style="--i:10" aria-label="Confirm attendance">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  Are You Coming?
+</button>
       </div>
       <a class="lnk rv" id="cal2" target="_blank" rel="noopener" style="--i:7">Also add the 11 December functions</a>
     </div>
@@ -503,6 +703,17 @@ html,body{background:var(--ground)}
 </main>
 
 <!-- Firebase Realtime Shared Database & Anonymous Auth -->
+<script>
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDe-S8MAC7oNjq0iBO9LguBKOQ3MYHQnfA",
+  authDomain: "alishautkarsh-54c0a.firebaseapp.com",
+  projectId: "alishautkarsh-54c0a",
+  storageBucket: "alishautkarsh-54c0a.firebasestorage.app",
+  messagingSenderId: "117708963068",
+  appId: "1:117708963068:web:ae651cf5a77a3d9e022b79",
+  measurementId: "G-PF1VCCTGEB"
+};
+</script>
 <script src="firebase-config.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -630,7 +841,8 @@ html,body{background:var(--ground)}
   teaseT=setTimeout(tease,1400);
   (function(){var i,t;for(i=0;i<26;i++){t=document.createElement('i');t.className='tw';
     t.style.cssText='left:'+(Math.random()*96).toFixed(1)+'%;top:'+(Math.random()*96).toFixed(1)+'%;animation-delay:-'+(Math.random()*3).toFixed(1)+'s;animation-duration:'+(2+Math.random()*2.4).toFixed(1)+'s';
-    env.appendChild(t);}})();
+    env.appendChild(t);}
+})();
 
   /* ===== Scene navigation (vertical scroll) ===== */
   var slides=$$('.slide'),N=slides.length,idx=-1,pos=0,lock=0,dotsEl=P('dots'),app=P('app'),pAnim=null,idleT=null,demoT=[],g=null;
@@ -746,7 +958,8 @@ html,body{background:var(--ground)}
       p.style.cssText='left:'+(Math.random()*100).toFixed(1)+'%;width:'+Math.round(8+Math.random()*16)+'px;height:'+Math.round(8+Math.random()*16)+'px;animation-duration:'+(14+Math.random()*14).toFixed(1)+'s;animation-delay:-'+(Math.random()*20).toFixed(1)+'s;--dx:'+Math.round(Math.random()*90-45)+'px';
       c.appendChild(p);
     }
-  })();
+  
+})();
   function petals(n){
     if(reduce)return;
     var c=document.createElement('div'),cols=['#E8A317','#E26D1F','#F2B544','#D63F7C','#F6C84A'],i,p;
@@ -858,7 +1071,7 @@ html,body{background:var(--ground)}
     return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(title)+'&dates='+start+'/'+end+
       '&ctz=Asia/Kolkata&details='+encodeURIComponent(details)+'&location='+encodeURIComponent(CFG.venue);
   }
-  P('cal').href=calLink('Wedding of Alisha & Utkarsh','20261212T103000','20261212T153000','Wedding ceremonies begin at 10:30 AM. Shubh muhurat 12:33 PM. The ceremony concludes with the sindoor rasam.');
+  // P('cal').href=calLink('Wedding of Alisha & Utkarsh','20261212T103000','20261212T153000','Wedding ceremonies begin at 10:30 AM. Shubh muhurat 12:33 PM. The ceremony concludes with the sindoor rasam.');
   P('cal2').href=calLink('Engagement, Haldi & Sangeet: Alisha & Utkarsh','20261211T100000','20261211T230000','Engagement 10:00 AM, Haldi 2:00 PM, Sangeet 7:00 PM.');
 
   /* ===== Music: Sajiri Gojiri ===== */
@@ -1204,6 +1417,355 @@ html,body{background:var(--ground)}
       console.error("Firebase init error:",err);
       renderWall(lsGet('au-blessings'));
     }
+  
+})();
+
+  /* ===== Smart RSVP ===== */
+  (function(){
+    // Read ?guest=... URL param for pre-fill
+    var urlGuest='';
+    try{var u=new URLSearchParams(window.location.search);urlGuest=u.get('guest')||'';}catch(_){}
+
+    var fabEl=document.getElementById('rsvp-fab');
+    var overlay=document.getElementById('rsvp-overlay');
+    var closeBtn=document.getElementById('rsvp-close');
+    var backdrop=document.getElementById('rsvp-backdrop');
+    var nameEl=document.getElementById('rsvp-name');
+    var yesBtn=document.getElementById('rsvp-yes');
+    var noBtn=document.getElementById('rsvp-no');
+    var countRowEl=document.getElementById('rsvp-count-row');
+    var foodRowEl=document.getElementById('rsvp-food-row');
+    var eventsRowEl=document.getElementById('rsvp-events-row');
+    var countEl=document.getElementById('rsvp-count');
+    var decBtn=document.getElementById('rsvp-dec');
+    var incBtn=document.getElementById('rsvp-inc');
+    var submitBtn=document.getElementById('rsvp-submit');
+    var errEl=document.getElementById('rsvp-err');
+    var formBody=document.getElementById('rsvp-form-body');
+    var confirmEl=document.getElementById('rsvp-confirm');
+    var confirmMsg=document.getElementById('rsvp-confirm-msg');
+    var calLink=document.getElementById('rsvp-cal-link');
+    var editBtn=document.getElementById('rsvp-edit-btn');
+
+    // Pre-fill from URL
+    if(urlGuest)nameEl.value=decodeURIComponent(urlGuest).replace(/\+/g,' ');
+
+    // Admin dashboard
+    (function(){
+      var adminBtn=document.getElementById('admin-btn');
+      var adminOverlay=document.getElementById('admin-overlay');
+      var adminBack=document.getElementById('admin-back');
+      var adminClose=document.getElementById('admin-close');
+      var adminPin=document.getElementById('admin-pin');
+      var adminPinBtn=document.getElementById('admin-pin-btn');
+      var adminErr=document.getElementById('admin-err');
+      var adminStats=document.getElementById('admin-stats');
+      var admTotal=document.getElementById('adm-total');
+      var admYes=document.getElementById('adm-yes');
+      var admVeg=document.getElementById('adm-veg');
+      var admNonveg=document.getElementById('adm-nonveg');
+      var admNo=document.getElementById('adm-no');
+      var adminGuestList=document.getElementById('admin-guest-list');
+      var adm_refreshBtn=document.getElementById('adm-refresh');
+      var ADMIN_PIN='2026';
+
+      function openAdmin(){
+        adminOverlay.removeAttribute('hidden');
+        requestAnimationFrame(function(){adminOverlay.classList.add('open');});
+        adminPin.focus();
+      }
+      function closeAdmin(){
+        adminOverlay.classList.remove('open');
+        setTimeout(function(){
+          adminOverlay.setAttribute('hidden','');
+          adminPin.value='';
+          adminErr.textContent='';
+          adminStats.style.display='none';
+        },350);
+      }
+      if(adminBtn) adminBtn.addEventListener('click',openAdmin);
+      if(adminClose) adminClose.addEventListener('click',closeAdmin);
+      if(adminBack) adminBack.addEventListener('click',closeAdmin);
+
+      function loadStats(){
+        admTotal.textContent='…';admYes.textContent='…';admVeg.textContent='…';admNonveg.textContent='…';admNo.textContent='…';
+        adminGuestList.textContent='';
+        if(typeof db==='undefined'||!db){adminErr.textContent='Not connected to Firestore.';return;}
+        db.collection('rsvps').get().then(function(snap){
+          var total=snap.size,yesCount=0,noCount=0,veg=0,nonveg=0,guestTotal=0;
+          var guests=[];
+          snap.forEach(function(d){
+            var data=d.data();
+            if(data.attending==='Yes'){
+              yesCount++;
+              var count = parseInt(data.guestCount,10) || 1;
+              guestTotal += count;
+              if(data.foodPreference==='Vegetarian') veg += count;
+              else if(data.foodPreference==='Non-Vegetarian') nonveg += count;
+            }else{
+              noCount++;
+            }
+            guests.push(data);
+          });
+          admTotal.textContent=total;
+          admYes.textContent=guestTotal+' guests';
+          admVeg.textContent=veg;
+          admNonveg.textContent=nonveg;
+          admNo.textContent=noCount;
+          adminGuestList.textContent='';
+          guests.sort(function(a,b){
+            var ta = (a.timestamp && a.timestamp.seconds) ? a.timestamp.seconds : 0;
+            var tb = (b.timestamp && b.timestamp.seconds) ? b.timestamp.seconds : 0;
+            return tb - ta;
+          });
+          guests.forEach(function(g){
+            var row=document.createElement('div');row.className='adm-guest';
+            var nm=document.createElement('div');nm.className='adm-guest-name';nm.textContent=g.guestName||'—';
+            var inf=document.createElement('div');inf.className='adm-guest-info';
+            inf.innerHTML=(g.attending==='Yes'?'✅ '+(g.guestCount||1)+' guest'+((g.guestCount||1)>1?'s':'')+'<br>'+(g.foodPreference||'Vegetarian'):'❌ Regrets');
+            row.appendChild(nm);row.appendChild(inf);adminGuestList.appendChild(row);
+          });
+        }).catch(function(e){adminErr.textContent='Error: '+(e.message||'Could not load.');});
+      }
+
+      function checkPin(){
+        if((adminPin.value||'').trim()===ADMIN_PIN){
+          adminErr.textContent='';
+          adminStats.style.display='flex';
+          loadStats();
+        }else{
+          adminErr.textContent='Incorrect PIN. Try again.';
+          adminPin.value='';
+          adminPin.focus();
+        }
+      }
+      if(adminPinBtn) adminPinBtn.addEventListener('click',checkPin);
+      if(adminPin) adminPin.addEventListener('keydown',function(e){if(e.key==='Enter')checkPin();});
+      if(adm_refreshBtn) adm_refreshBtn.addEventListener('click',loadStats);
+      if(adminOverlay) adminOverlay.addEventListener('keydown',function(e){if(e.key==='Escape')closeAdmin();});
+
+      // Show admin button when envelope opened or fallback
+      var origFabObs=new MutationObserver(function(){
+        if(fabEl&&!fabEl.hidden&&adminBtn) adminBtn.removeAttribute('hidden');
+      });
+      if(fabEl) origFabObs.observe(fabEl,{attributes:true});
+      setTimeout(function(){if(adminBtn)adminBtn.removeAttribute('hidden');},3000);
+    })();
+
+    // Show fab when invitation is opened
+    var origOpenNow=window.__rsvpOpenNow;
+    document.addEventListener('rsvp:show',function(){fabEl.removeAttribute('hidden');});
+    // Piggyback on the existing openNow flow: show fab when envelope is opened
+    // We patch the event: listen for when #env is removed / becomes invisible
+    var envEl=document.getElementById('env');
+    if(envEl){
+      var mo=new MutationObserver(function(){
+        if(!document.getElementById('env')){fabEl.removeAttribute('hidden');mo.disconnect();}
+      });
+      mo.observe(document.body,{childList:true,subtree:false});
+    }
+
+    // Also show it on a small delay as fallback
+    setTimeout(function(){if(fabEl.hidden){fabEl.removeAttribute('hidden');}},3000);
+
+    // Attending state
+    var attending=null; // 'yes' | 'no' | null
+    var guestCount=1;
+    var foodPref='Vegetarian';
+
+    function setAttending(val){
+      attending=val;
+      yesBtn.classList.toggle('sel-yes',val==='yes');
+      noBtn.classList.toggle('sel-no',val==='no');
+      countRowEl.hidden=val!=='yes';
+      foodRowEl.hidden=val!=='yes';
+      eventsRowEl.hidden=val!=='yes';
+    }
+    yesBtn.addEventListener('click',function(){setAttending('yes');});
+    noBtn.addEventListener('click',function(){setAttending('no');});
+
+    // Stepper
+    function setCount(n){guestCount=Math.max(1,Math.min(20,n));countEl.textContent=guestCount;decBtn.disabled=guestCount<=1;incBtn.disabled=guestCount>=20;}
+    setCount(1);
+    decBtn.addEventListener('click',function(){setCount(guestCount-1);});
+    incBtn.addEventListener('click',function(){setCount(guestCount+1);});
+
+    // Food pills
+    document.querySelectorAll('.rsvp-pill[data-food]').forEach(function(p){
+      p.addEventListener('click',function(){
+        foodPref=p.getAttribute('data-food');
+        document.querySelectorAll('.rsvp-pill[data-food]').forEach(function(q){q.classList.remove('active');});
+        p.classList.add('active');
+      });
+    });
+
+    // Modal open/close
+    function loadSavedRSVP(){
+      try{
+        var saved = JSON.parse(localStorage.getItem('au-rsvp-data') || 'null');
+        if(saved && saved.guestName){
+          nameEl.value = saved.guestName;
+          setAttending(saved.attending === 'Yes' ? 'yes' : 'no');
+          if(saved.guestCount) setCount(saved.guestCount);
+          if(saved.foodPreference){
+            foodPref = saved.foodPreference;
+            document.querySelectorAll('.rsvp-pill[data-food]').forEach(function(q){
+              q.classList.toggle('active', q.getAttribute('data-food') === foodPref);
+            });
+          }
+          if(saved.events && Array.isArray(saved.events)){
+            var ev1=document.getElementById('rsvp-ev1');
+            var ev2=document.getElementById('rsvp-ev2');
+            if(ev1) ev1.checked = saved.events.indexOf(ev1.value) !== -1;
+            if(ev2) ev2.checked = saved.events.indexOf(ev2.value) !== -1;
+          }
+          submitBtn.textContent = 'Update My Attendance';
+        }
+      }catch(_){}
+    }
+
+    if(editBtn){
+      editBtn.addEventListener('click', function(){
+        confirmEl.style.display = 'none';
+        formBody.style.display = 'block';
+        loadSavedRSVP();
+      });
+    }
+
+    function openRSVP(){
+      overlay.removeAttribute('hidden');
+      requestAnimationFrame(function(){overlay.classList.add('open');});
+      document.body.style.overflow='hidden';
+      // If user previously submitted, pre-fill their existing data so they can update
+      loadSavedRSVP();
+      nameEl.focus();
+    }
+    function closeRSVP(){
+      overlay.classList.remove('open');
+      setTimeout(function(){overlay.setAttribute('hidden','');document.body.style.overflow='';},400);
+    }
+    fabEl.addEventListener('click',openRSVP);
+    closeBtn.addEventListener('click',closeRSVP);
+    backdrop.addEventListener('click',closeRSVP);
+    overlay.addEventListener('keydown',function(e){if(e.key==='Escape')closeRSVP();});
+
+    // Calendar link helper
+    function makeCalLink(title,start,end,detail){
+      return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(title)+'&dates='+start+'/'+end+'&ctz=Asia/Kolkata&details='+encodeURIComponent(detail)+'&location='+encodeURIComponent('Nature Fun Resort, Nashik Road, Nashik, Maharashtra');
+    }
+
+    // Submit
+    submitBtn.addEventListener('click',function(){
+      var name=(nameEl.value||'').trim();
+      if(!name){errEl.textContent='Please enter your name.';nameEl.focus();return;}
+      if(!attending){errEl.textContent='Please select whether you are attending.';return;}
+      errEl.textContent='';
+      submitBtn.disabled=true;
+      submitBtn.textContent='Submitting…';
+
+      // Collect events
+      var ev1=document.getElementById('rsvp-ev1');
+      var ev2=document.getElementById('rsvp-ev2');
+      var events=[];
+      if(attending==='yes'){
+        if(ev1&&ev1.checked)events.push(ev1.value);
+        if(ev2&&ev2.checked)events.push(ev2.value);
+      }
+
+      var entry={
+        guestName:name.slice(0,80),
+        attending:attending==='yes'?'Yes':'No',
+        guestCount:attending==='yes'?guestCount:0,
+        foodPreference:attending==='yes'?foodPref:'N/A',
+        events:events,
+        timestamp:null // will be set below
+      };
+
+      function onSuccess(){
+        submitBtn.disabled=false;
+        submitBtn.textContent='Confirm RSVP';
+        formBody.style.display='none';
+        confirmEl.style.display='flex';
+        fabEl.classList.add('submitted');
+        fabEl.querySelector('span')||fabEl;
+        // Update FAB text
+        var spans=fabEl.querySelectorAll('*:not(svg):not(path):not(polyline):not(line):not(rect)');
+        // simplest: set the text node
+        var nodes=fabEl.childNodes;
+        for(var i=0;i<nodes.length;i++){if(nodes[i].nodeType===3){nodes[i].textContent=' Done ✓';}}
+        // Confirmation message
+        if(attending==='yes'){
+          confirmMsg.textContent='Your RSVP is confirmed. We\'re so excited to celebrate with you!';
+          // Set calendar link (wedding day)
+          calLink.href=makeCalLink('Wedding of Alisha & Utkarsh','20261212T103000','20261212T153000','Wedding ceremonies begin at 10:30 AM. Shubh muhurat 12:33 PM.');
+          calLink.style.display='inline-flex';
+        }else{
+          confirmMsg.textContent='We\'ll miss you! Thank you for letting us know.';
+          calLink.style.display='none';
+        }
+        // Save submitted state & full entry for this guest on this device
+        try{
+          localStorage.setItem('au-rsvp-submitted','1');
+          localStorage.setItem('au-rsvp-data', JSON.stringify(entry));
+        }catch(_){}
+      }
+
+      function onError(msg){
+        submitBtn.disabled=false;
+        submitBtn.textContent='Confirm RSVP';
+        errEl.textContent=msg||'Could not submit. Please try again.';
+      }
+
+      // Try Firestore with Smart Upsert
+      if(typeof db!=='undefined'&&db){
+        try{
+          var serverTs=firebase.firestore.FieldValue.serverTimestamp();
+          entry.timestamp=serverTs;
+          var trimmedName=name.slice(0,80);
+          var savedDocId='';
+          try{savedDocId=localStorage.getItem('au-rsvp-doc-id')||'';}catch(_){}
+          var upsertPromise;
+          if(savedDocId){
+            upsertPromise=db.collection('rsvps').doc(savedDocId).set(entry,{merge:true});
+          }else{
+            upsertPromise=db.collection('rsvps').where('guestName','==',trimmedName).limit(1).get().then(function(snap){
+              if(!snap.empty){
+                var docRef=snap.docs[0].ref;
+                try{localStorage.setItem('au-rsvp-doc-id',docRef.id);}catch(_){}
+                return docRef.set(entry,{merge:true});
+              }else{
+                return db.collection('rsvps').add(entry).then(function(ref){
+                  try{localStorage.setItem('au-rsvp-doc-id',ref.id);}catch(_){}
+                });
+              }
+            });
+          }
+          upsertPromise.then(function(){
+            onSuccess();
+          }).catch(function(err){
+            console.error('RSVP Firestore error:',err);
+            try{localStorage.setItem('au-rsvp-local',JSON.stringify({guestName:name,attending:entry.attending,ts:Date.now()}));}catch(_){}
+            onSuccess();
+          });
+        }catch(e){
+          console.error('RSVP error:',e);
+          onSuccess();
+        }
+      }else{
+        // Offline fallback
+        try{localStorage.setItem('au-rsvp-local',JSON.stringify({guestName:name,attending:entry.attending,ts:Date.now()}));}catch(_){}
+        onSuccess();
+      }
+    });
+
+    // If already submitted this session, show done state on FAB
+    try{
+      if(localStorage.getItem('au-rsvp-submitted')==='1'){
+        fabEl.classList.add('submitted');
+        var nodes2=fabEl.childNodes;
+        for(var i=0;i<nodes2.length;i++){if(nodes2[i].nodeType===3){nodes2[i].textContent=' Done ✓';}}
+      }
+    }catch(_){}
   })();
 })();
 </script>
